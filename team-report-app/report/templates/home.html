@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Report</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        >
+    </head>
+    <body class="bg-light">
+        <nav class="navbar navbar-expand-lg bg-light sticky-top bg-primary border">
+            <div class="container-fluid">
+                <a class="navbar-brand">Hey {{request.user}}</a>
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'home'%}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'addtestcase' %}">Add TestCase</a>
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                href="{% url "addrequirements" %}"
+                                class="nav-link"
+                            >Add Feature</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'createreport' %}">Add report</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'allreport' %}">View All Report</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-danger" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link "></a>
+                        </li>
+                        <li class="nav-item">
+                            <form method="get" class="d-flex">
+                                <input type="date" name="search_date" class="form-control">
+                                <button class="btn btn-outline-dark" type="submit">Submit</button>
+                            </form>
+                        </li>
+                    </ul>
+                    
+                    <form class="d-flex" role="search" method="get">
+                        <input
+                            class="form-control me-2"
+                            type="search"
+                            name="search_query"
+                            placeholder="Search by TestCase Name"
+                            aria-label="Search"
+                        >
+                        <button class="btn btn-outline-dark" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        <div class="m-5">
+        </div>
+          <div class="card m-3">
+              <div class="card-header d-flex align-items-center">
+                  
+                    <h5>Report</h5>
+                  </div>
+                  <div class="card-body pb-2">
+                    <table role="grid"
+                        aria-describedby="datatable_info"
+                        class = 'table table-stripped'
+                    >
+                        <thead class="thead-light">
+                            <tr role="row">
+                                <th
+                                    class="col"
+                                    tabindex="0"
+                                    aria-controls="datatable"
+                                    rowspan="1"
+                                    cpolspan="1"
+                                    aria-label="Status: activate to sort column ascending"
+                                    style="width: 177.719px;"
+                                >Report Title</th>
+                                <th
+                                    class="col"
+                                    tabindex="0"
+                                    aria-controls="datatable"
+                                    rowspan="1"
+                                    colspan="1"
+                                    aria-label="Type: activate to sort column ascending"
+                                    style="width: 225.109px;"
+                                >Report's Feature</th>
+                                <th
+                                    class="col"
+                                    tabindex="0"
+                                    aria-controls="datatable"
+                                    rowspan="1"
+                                    colspan="1"
+                                    aria-label="Type: activate to sort column ascending"
+                                    style="width: 225.109px;"
+                                >Created At</th>
+                                <th
+                                    class="col"
+                                    tabindex="0"
+                                    aria-controls="datatable"
+                                    rowspan="1"
+                                    colspan="1"
+                                    aria-label="Type: activate to sort column ascending"
+                                    style="width: 225.109px;"
+                                >is done</th>
+                                <th
+                                    class="col"
+                                    tabindex="0"
+                                    aria-controls="datatable"
+                                    rowspan="1"
+                                    colspan="1"
+                                    aria-label="Type: activate to sort column ascending"
+                                    style="width: 225.109px;"
+                                >Created By</th>
+                                <th
+                                    class="col text-center"
+                                    tabindex="0"
+                                    aria-controls="datatable"
+                                    rowspan="1"
+                                    colspan="1"
+                                    aria-label="Type: activate to sort column ascending"
+                                    style="width: 225.109px;"
+                                >Details</th>
+                                <th
+                                    class="col"
+                                    tabindex="0"
+                                    aria-controls="datatable"
+                                    rowspan="1"
+                                    cpolspan="1"
+                                    aria-label="Status: activate to sort column ascending"
+                                    style="width: 177.719px;"
+                                >Update Report</th>
+                                <th
+                                    class="col"
+                                    tabindex="0"
+                                    aria-controls="datatable"
+                                    rowspan="1"
+                                    cpolspan="1"
+                                    aria-label="Status: activate to sort column ascending"
+                                    style="width: 177.719px;"
+                                >Add Results</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                          
+                            {% for test in report %}
+                            <tr role="row" class="odd">
+                                <td>{{ test.title }}</td>
+                                <td class="text-wrap ">
+                                    {% for obj in test.features.all %}
+            {{ obj }}
+                                    <br>
+                                    {% endfor %}
+                                </td>
+                                <td>{{test.created_at}}</td>
+                                <td>{{test.is_done}}</td>
+                                <td>{{test.created_by}}</td>
+                                <td>
+                                    <div class=" text-light text-center">
+                                        <a href="{% url "reportdetails" test.pk %}"
+                                            class="btn btn-outline-dark "
+                                        >Details</a>
+                                    </td>
+                                    <td> {% if test.is_done is True %}
+                                        <div class=" text-dark text-wrap">
+                                            this report is completed
+                                        </div>
+                                        {% else %}
+                                        <div class=" text-light text-center">
+                                            <a
+                                                href="{% url "updatereport" test.pk %}"
+                                                class="btn btn-outline-dark "
+                                            >update</a>
+                                        </div>
+                                    </td>
+                                    {% endif %}
+                                    <td>
+                                        <div class=" text-light text-center">
+                                            <a
+                                                href="{% url "createresult" test.pk %}"
+                                                class="btn btn-outline-dark "
+                                            >Add results</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card m-3">
+                  <div class="card-header d-flex align-items-center">
+                          <h5>Features</h5>
+                      </div>
+
+                  <div class="card-body pb-2">
+                
+                <table
+                    
+                    role="grid"
+                    aria-describedby="datatable_info"
+                    class='table table-stripped'
+                >
+                    <thead class="thead-light">
+                        <tr role="row">
+                            <th
+                                class="sorting"
+                                tabindex="0"
+                                aria-controls="datatable"
+                                rowspan="1"
+                                cpolspan="1"
+                                aria-label="Status: activate to sort column ascending"
+                                style="width: 177.719px;"
+                            >Feature ID</th>
+                            <th
+                                class="sorting"
+                                tabindex="0"
+                                aria-controls="datatable"
+                                rowspan="1"
+                                colspan="1"
+                                aria-label="Type: activate to sort column ascending"
+                                style="width: 225.109px;"
+                            >Feature Title</th>
+                            <th
+                                class="sorting"
+                                tabindex="0"
+                                aria-controls="datatable"
+                                rowspan="1"
+                                colspan="1"
+                                aria-label="Type: activate to sort column ascending"
+                                style="width: 225.109px;"
+                            >Feature Description</th>
+                            <th
+                                class="sorting"
+                                tabindex="0"
+                                aria-controls="datatable"
+                                rowspan="1"
+                                colspan="1"
+                                aria-label="Type: activate to sort column ascending"
+                                style="width: 225.109px;"
+                            >Created At</th>
+                            <th
+                                class="sorting"
+                                tabindex="0"
+                                aria-controls="datatable"
+                                rowspan="1"
+                                colspan="1"
+                                aria-label="Type: activate to sort column ascending"
+                                style="width: 225.109px;"
+                            >Created By</th>
+                            <th
+                                class="sorting"
+                                tabindex="0"
+                                aria-controls="datatable"
+                                rowspan="1"
+                                colspan="1"
+                                aria-label="Type: activate to sort column ascending"
+                                style="width: 225.109px;"
+                            >Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for test in reqment %}
+                        <tr role="row" class="odd">
+                            <td>{{ test.id }}</td>
+                            <td>{{test.title}}</td>
+                            <td class="text-break">{{test.description | safe}}</td>
+                            <td>{{test.created_at}}</td>
+                            <td>{{test.created_by}}</td>
+                            <td>
+                                <div class=" text-light">
+                                    <a
+                                        href="{% url "reqdetails" test.pk %}"
+                                        class="btn btn-outline-dark "
+                                    >Details</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="card m-3">
+            <div class="card-header d-flex align-items-center">
+                
+              <h1>My Test Cases</h1>
+            </div>
+            <div class="card-body pb-2">
+                <table
+                    
+                    class='table table-stripped'
+                    role="grid"
+                    aria-describedby="datatable_info"
+                >
+                    <thead class="thead-light">
+                        <tr role="row">
+                            <th
+                                class="table-column-ps-0 sorting_disabled"
+                                rowspan="1"
+                                colspan="1"
+                                aria-label="Full name"
+                                style="width: 322.125px;"
+                            >Feature Name</th>
+                            <th
+                                class="table-column-ps-0 sorting_disabled"
+                                rowspan="1"
+                                colspan="1"
+                                aria-label="Full name"
+                                style="width: 322.125px;"
+                            >TestCase ID</th>
+                            <th
+                                class="table-column-ps-0 sorting_disabled"
+                                rowspan="1"
+                                colspan="1"
+                                aria-label="Full name"
+                                style="width: 322.125px;"
+                            >TestCase Name</th>
+                            <th
+                                class="table-column-ps-0 sorting_disabled"
+                                rowspan="1"
+                                colspan="1"
+                                aria-label="Full name"
+                                style="width: 322.125px;"
+                            >Created At</th>
+                            <th
+                                class="sorting"
+                                tabindex="0"
+                                aria-controls="datatable"
+                                rowspan="1"
+                                colspan="1"
+                                aria-label="Type: activate to sort column ascending"
+                                style="width: 225.109px;"
+                            >App</th>
+                            <th
+                                class="sorting"
+                                tabindex="0"
+                                aria-controls="datatable"
+                                rowspan="1"
+                                colspan="1"
+                                aria-label="Signed up: activate to sort column ascending"
+                                style="width:27%"
+                            >Test Description</th>
+                            <th
+                                class="sorting"
+                                tabindex="0"
+                                aria-controls="datatable"
+                                rowspan="1"
+                                colspan="1"
+                                aria-label="Signed up: activate to sort column ascending"
+                                style="width: 184.453px;"
+                            >Update</th>
+                            <th
+                                class="sorting_disabled"
+                                rowspan="1"
+                                colspan="1"
+                                aria-label="Email"
+                                style="width: 237.062px;"
+                            >Test Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for test in testcase %}
+                        <tr role="row" class="odd">
+                            <td>{{test.feature}}</td>
+                            <td class="table-column-ps-0">
+                                {{test.id}}
+                            </td>
+                            <td>{{ test.title }}</td>
+                            <td class="text-primary">{{ test.updated_at }}</td>
+                            <td>{{ test.app }}</td>
+                            <td class="text-break">{{test.description | safe}}</td>
+                            <td>
+                                <div class=" text-light">
+                                    <a
+                                        href="{% url "updatetestcases" test.pk %}"
+                                        class="btn btn-outline-dark "
+                                    >update Description</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class=" text-light text-center">
+                                    <a
+                                        href="{% url "showtestresult" test.pk %}"
+                                        class="btn btn-outline-dark "
+                                    >Show Result</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+              </div>
+              </div>
+              <div class="card m-3">
+                <div class="card-header d-flex align-items-center">
+                  <h1>TestResults</h1>
+                </div>
+                <table class='table table-stripped'
+                    role="grid"
+                    aria-describedby="datatable_info"
+                >
+                
+                  <div class="card-body pb-2">
+                    <thead class="thead-light">
+                        <th
+                            class="table-column-ps-0 sorting_disabled"
+                            rowspan="1"
+                            colspan="1"
+                            aria-label="Full name"
+                            style="width: 322.125px;"
+                        >TestCase ID</th>
+                        <th
+                            class="table-column-ps-0 sorting_disabled"
+                            rowspan="1"
+                            colspan="1"
+                            aria-label="Full name"
+                            style="width: 322.125px;"
+                        >Report Title</th>
+                        <th
+                            class="table-column-ps-0 sorting_disabled"
+                            rowspan="1"
+                            colspan="1"
+                            aria-label="Full name"
+                            style="width: 322.125px;"
+                        >Created At</th>
+                        <th
+                            class="table-column-ps-0 sorting_disabled"
+                            rowspan="1"
+                            colspan="1"
+                            aria-label="Full name"
+                            style="width: 322.125px;"
+                        >TestCase Name</th>
+                        <th
+                            class="sorting"
+                            tabindex="0"
+                            aria-controls="datatable"
+                            rowspan="1"
+                            colspan="1"
+                            aria-label="Type: activate to sort column ascending"
+                            style="width: 225.109px;"
+                        >App</th>
+                        <th
+                            class="table-column-ps-0 sorting_disabled"
+                            rowspan="1"
+                            colspan="1"
+                            aria-label="Full name"
+                            style="width: 322.125px;"
+                        >Tested by</th>
+                        <th
+                            class="table-column-ps-0 sorting_disabled"
+                            rowspan="1"
+                            colspan="1"
+                            aria-label="Full name"
+                            style="width: 322.125px;"
+                        >Test Result</th>
+                        <th
+                            class="sorting"
+                            tabindex="0"
+                            aria-controls="datatable"
+                            rowspan="1"
+                            colspan="1"
+                            aria-label="Signed up: activate to sort column ascending"
+                            style="width:20%"
+                        >Test Result Comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for test in test %}
+                    <tr role="row" class="odd">
+                        <td class="table-column-ps-0">{{test.testcase.id}}</td>
+                        <td>{{ test.report.title }}</td>
+                        <td>{{ test.created_at }}</td>
+                        <td>{{ test.testcase.title }}</td>
+                        <td class="text-primary">{{ test.testcase.app }}</td>
+                        <td>{{ test.tested_by }}</td>
+                        <td>
+                            {% if test.result == 'untested' %}
+                            <span class="p-2 badge bg-secondary bg-opacity-10 text-secondary">{{test.result}}</span>
+                            {% elif test.result == 'passed' %}
+                            <span class="p-2 badge bg-success bg-opacity-10 text-success">{{test.result}}</span>
+                            {% elif test.result == 'failed' %}
+                            <span class="p-2 h2 badge bg-danger bg-opacity-10 text-danger">{{test.result}}</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-break ">{{test.comment | safe}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+               </div>
+             </div>
+            </table>
+            
+
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    </body>
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>User All Test Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  </head>
+  <body> 
+
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header">
+      <h5 class="mb-0">Reports</h5>
+      
+    </div>
+
+    
+
+    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+      <div class="datatable-header">
+        
+              
+            </div>
+            <div class="datatable-scroll">
+      <table class="table datatable-basic dataTable no-footer" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
+        <thead>
+        <tr>
+          <th class="text-center sorting_disabled" rowspan="1" colspan="1" aria-label="Actions" style="width: 100px;">Report ID</th><th class="sorting sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="First Name: activate to sort column descending">Title</th>
+          <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Job Title: activate to sort column ascending">Created By</th>
+          <th class="text-center sorting_disabled" rowspan="1" colspan="1" aria-label="Actions" style="width: 100px;">Features</th>
+          <th class="text-center sorting_disabled" rowspan="1" colspan="1" aria-label="Actions" style="width: 100px;">Created At</th>
+          <th class="text-center sorting_disabled" rowspan="1" colspan="1" aria-label="Actions" style="width: 100px;">More Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for report in tests %}
+        <tr class="even">
+
+          <td class="text-break">{{ report.id }}</td>
+          <td class="sorting_1">{{ report.title }} </td>
+          <td class="text-break">{{ report.user }}</td>
+
+          
+          
+            <td>{% for answer in report.feature.all %}
+              {{ answer }}<br>
+            {% endfor %}</td>
+
+          <td class="text-break">{{ report.created_at }}</td>
+
+          <td>
+            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+              <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'reportdetails' report.id %}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-right-circle-fill" viewBox="0 0 16 16">
+                <path d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8zm5.904 2.803a.5.5 0 1 1-.707-.707L9.293 6H6.525a.5.5 0 1 1 0-1H10.5a.5.5 0 0 1 .5.5v3.975a.5.5 0 0 1-1 0V6.707l-4.096 4.096z"/>
+              </svg>Details</a></div>
+          </div>
+        </div></td>
+
+        </tr>
+        {% endfor %}
+        
+      </tbody>
+    </table>
+
+  </div>
+</div></div>
+  </div>
+</div>
+ </body>
+</html>
+
+

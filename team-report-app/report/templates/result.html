@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>User All Test Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  </head>
+  <body>
+
+{% extends "base.html" %}
+
+{% block content %}
+    <div class='m-5'></div>    
+    <div class="container">
+      <div class="row">
+          <div class="col-lg-12">
+              <div class="">
+                  <div class="table-responsive">
+                      <table class="table project-list-table table-nowrap align-middle table-borderless">
+                          <thead>
+                              <tr>
+                                  <th scope="col" class="ps-4" style="width: ;">Test id</th>
+                                  <th scope="col">TestCase Name</th>
+                                  <th scope="col">Result</th>
+                                  <th scope="col">Tested By</th>
+                                  <th scope="col">Comment</th>
+                                  <th scope="col" style="width: 200px;">Features</th>
+                                  <th scope="col">Tested at</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            {% for result  in task %}
+                            <tr class="even">
+                              <td>{{ result.testcase.id }}</td>
+                              <td> {{ result.testcase.title }}</td>
+                              <td>
+                                {% if result.result == 'untested' %}
+                                  <span class="badge bg-secondary bg-opacity-10 text-secondary">{{result.result}}</span>
+                                {% elif result.result == 'passed' %}
+                          
+                                  <span class="badge bg-success bg-opacity-10 text-success">{{result.result}}</span>
+                                {% elif result.result == 'failed' %}
+                          
+                                
+                                  <span class="badge bg-danger bg-opacity-10 text-danger">{{result.result}}</span>
+                                
+                                {% endif %}
+
+                              </td>
+                              <td> {{result.tested_by}}</td>
+
+                              <td>{{result.comment | safe }}</td>
+                              <td>
+                                {% for obj in result.report.features.all %}
+                                  {{ obj }}<br>
+
+                                {% endfor %}
+                              </td>
+
+                              <td>{{result.created_at }}</td>
+                              {% endfor %}
+                            </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+{% endblock %}
+ 
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
+

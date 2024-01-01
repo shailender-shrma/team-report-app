@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  
+</head>
+<body>
+    
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load widget_tweaks %}
+    <div class="mt-5">
+    <div class="d-flex align-items-center justify-content-center">
+    <div class="p-2 m-2 bg-light text-white shadow rounded-2">
+        <form method="post" class="mt-5">
+            <div class="mt-5 align-text-center text-dark">
+                {% csrf_token %}
+                    <h1 class="h3 mb-3 font-weight-normal ">Add TestResult</h1>
+                        <p>Select TestCase</p>
+                        {% render_field  form.testcase class="form-control mb-2"%}
+                        {{form.media}}
+                        {% render_field  form.comment class="form-control mb-2"%}
+                        {% render_field  form.result class="form-control mb-2"%}
+                        <br>
+                        <button class="btn btn-primary btn-block mb-4">submit</button>
+                    </div>
+                </form>
+        </div>
+    </div> 
+</div>
+{% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
